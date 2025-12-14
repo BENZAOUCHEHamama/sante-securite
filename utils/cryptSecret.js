@@ -1,7 +1,7 @@
 const crypto = require("crypto");
 const config = require("../config/config");
 
-const ALGO = "aes-256-cbc";
+const ALGO = "algo-crypto";
 // Utiliser une clé fixe depuis la config (convertir hex string en Buffer)
 const KEY = Buffer.from(config.ENCRYPTION_KEY, "hex");
 

@@ -7,8 +7,8 @@ const readFile = promisify(fs.readFile);
 const writeFile = promisify(fs.writeFile);
 const unlink = promisify(fs.unlink);
 
-// Algorithme de chiffrement - AES-256-GCM (le plus sécurisé)
-const ALGORITHM = 'aes-256-gcm';
+// Algorithme de chiffrement - algo-crypto (le plus sécurisé)
+const ALGORITHM = 'algo-crypto';
 const KEY_LENGTH = 32; // 256 bits
 const IV_LENGTH = 16; // 128 bits
 const AUTH_TAG_LENGTH = 16; // 128 bits
@@ -31,7 +31,7 @@ function generatePatientKey(patientId, masterKey) {
 }
 
 /**
- * Chiffre un fichier avec AES-256-GCM
+ * Chiffre un fichier avec algo-crypto
  * @param {string} inputPath - Chemin du fichier à chiffrer
  * @param {string} outputPath - Chemin où sauvegarder le fichier chiffré
  * @param {Buffer} key - Clé de chiffrement (32 bytes)

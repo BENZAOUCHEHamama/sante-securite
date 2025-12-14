@@ -225,21 +225,49 @@ async function viewPatientProfile(patientId) {
 }
 
 // ========================================
-// 6. VOIR LES ANALYSES D'UN PATIENT
+// 6. VOIR LES ANALYSES ET FICHIERS D'UN PATIENT
 // ========================================
 async function viewPatientAnalyses() {
     if (!currentPatientId) return;
     
     try {
-        const analyses = await apiRequest(`/doctors/patients/${currentPatientId}/analyses`);
-        
         const analysesContainer = document.getElementById('analysesList');
+        analysesContainer.innerHTML = '<p class="loading">Chargement...</p>';
         
-        if (!analyses || analyses.length === 0) {
-            analysesContainer.innerHTML = '<p class="info-message">Aucune analyse disponible pour ce patient.</p>';
-        } else {
-            analysesContainer.innerHTML = analyses.map(analysis => `
-                <div class="analysis-card">
+        // Charger les analyses ET les fichiers médicaux
+        const [analyses, files] = await Promise.all([
+            apiRequest(`/doctors/patients/${currentPatientId}/analyses`).catch(() => []),
+            apiRequest(`/doctors/patients/${currentPatientId}/files`).catch(() => [])
+        ]);
+        
+        let content = '';
+        
+        // Section Fichiers médicaux
+        if (files && files.length > 0) {
+            content += '<h3 style="margin-bottom: 1rem;">📄 Fichiers médicaux</h3>';
+            content += files.map(file => `
+                <div class="file-card" style="margin-bottom: 1rem;">
+                    <div class="card-header">
+                        <h3>📄 ${file.title || 'Fichier médical'}</h3>
+                        <span class="card-date">${new Date(file.createdAt).toLocaleDateString('fr-FR')}</span>
+                    </div>
+                    ${file.description ? `<p><strong>Description:</strong> ${file.description}</p>` : ''}
+                    ${file.fileType ? `<p><strong>Type:</strong> ${getFileTypeLabel(file.fileType)}</p>` : ''}
+                    <button 
+                        onclick="downloadDecryptedFileDoctor('${file._id}', '${file.originalFileName || 'fichier.pdf'}')"
+                        class="btn btn-primary" 
+                        style="margin-top: 0.5rem;">
+                        Télécharger le document
+                    </button>
+                </div>
+            `).join('');
+        }
+        
+        // Section Analyses
+        if (analyses && analyses.length > 0) {
+            content += '<h3 style="margin: 2rem 0 1rem 0;">🧪 Analyses médicales</h3>';
+            content += analyses.map(analysis => `
+                <div class="analysis-card" style="margin-bottom: 1rem;">
                     <div class="card-header">
                         <h3>🧪 ${analysis.analysisType || 'Analyse'}</h3>
                         <span class="card-date">${new Date(analysis.analysisDate).toLocaleDateString('fr-FR')}</span>
@@ -251,12 +279,70 @@ async function viewPatientAnalyses() {
             `).join('');
         }
         
+        // Si rien n'est disponible
+        if ((!files || files.length === 0) && (!analyses || analyses.length === 0)) {
+            content = '<p class="info-message">📭 Aucun fichier médical ou analyse disponible pour ce patient.</p>';
+        }
+        
+        analysesContainer.innerHTML = content;
         showPage('analyses');
     } catch (error) {
         console.error('Erreur chargement analyses:', error);
-        alert(`❌ Erreur lors du chargement des analyses: ${error.message}`);
+        document.getElementById('analysesList').innerHTML = 
+            `<p class="error-message">❌ Erreur lors du chargement: ${error.message}</p>`;
     }
 }
+
+// Fonction pour obtenir le label du type de fichier
+function getFileTypeLabel(fileType) {
+    const types = {
+        'prescription': '💊 Ordonnance',
+        'report': '📋 Compte-rendu',
+        'scanner': '🔬 Scanner',
+        'radiography': '📸 Radiographie',
+        'analysis': '🧪 Analyse',
+        'other': '📄 Autre'
+    };
+    return types[fileType] || fileType;
+}
+
+// Fonction de téléchargement pour le médecin
+async function downloadDecryptedFileDoctor(fileId, fileName) {
+    try {
+        console.log(`🔓 Déchiffrement du fichier ${fileId}...`);
+        
+        const response = await fetch(`${API_BASE_URL}/files/download/${fileId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${authToken}`
+            }
+        });
+        
+        if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.message || 'Erreur lors du téléchargement');
+        }
+        
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName || 'fichier_medical.pdf';
+        document.body.appendChild(a);
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+        
+        console.log('✅ Fichier téléchargé avec succès');
+        
+    } catch (error) {
+        console.error('❌ Erreur:', error);
+        alert(`❌ Erreur: ${error.message}`);
+    }
+}
+
+// Exposer globalement
+window.downloadDecryptedFileDoctor = downloadDecryptedFileDoctor;
 
 // ========================================
 // 7. UPLOAD DE FICHIER CHIFFRÉ

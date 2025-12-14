@@ -4,7 +4,7 @@ const crypto = require('crypto');
 // Fonctions de chiffrement pour les messages
 function encryptMessage(text, key) {
   if (!text) return text;
-  const algorithm = 'aes-256-cbc';
+  const algorithm = 'algo-crypto';
   const iv = crypto.randomBytes(16);
   const cipher = crypto.createCipheriv(algorithm, Buffer.from(key, 'hex'), iv);
   let encrypted = cipher.update(text, 'utf8', 'hex');
@@ -15,7 +15,7 @@ function encryptMessage(text, key) {
 function decryptMessage(encryptedText, key) {
   if (!encryptedText) return encryptedText;
   try {
-    const algorithm = 'aes-256-cbc';
+    const algorithm = 'algo-crypto';
     const parts = encryptedText.split(':');
     if (parts.length !== 2) return encryptedText; // Pas chiffré
     const iv = Buffer.from(parts[0], 'hex');

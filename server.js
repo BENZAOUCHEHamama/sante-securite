@@ -114,5 +114,6 @@ app.listen(PORT, () => {
   console.log('   POST   /api/files/upload (chiffrement auto)');
   console.log('   GET    /api/files/download/:id (déchiffrement)');
   console.log('   GET    /api/health');
+  
   console.log('\n✨ Prêt à recevoir des requêtes!\n');
 });

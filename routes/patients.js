@@ -174,14 +174,24 @@ router.get('/files', authenticate, checkPermission('patient'), async (req, res) 
       return res.status(404).json({ message: 'Patient non trouvé' });
     }
 
-    const files = await MedicalFile.find({ patientId: patient._id })
+    // ✅ CORRECTION : Utiliser 'patient' au lieu de 'patientId' et 'doctor' au lieu de 'doctorId'
+    const files = await MedicalFile.find({ patient: patient._id })
       .sort({ createdAt: -1 })
-      .populate('doctorId', 'email');
+      .populate('doctor', 'email username firstName lastName');
 
     // Déchiffrer les données
     const decryptedFiles = files.map(file => {
-      const decrypted = file.decryptFields();
-      return decrypted;
+      try {
+        if (file.decryptFields && typeof file.decryptFields === 'function') {
+          const decrypted = file.decryptFields();
+          return decrypted;
+        } else {
+          return file.toObject();
+        }
+      } catch (error) {
+        console.error(`❌ Erreur déchiffrement fichier ${file._id}:`, error.message);
+        return file.toObject();
+      }
     });
 
     res.json(decryptedFiles);

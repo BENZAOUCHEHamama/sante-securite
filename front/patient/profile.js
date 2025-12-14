@@ -309,7 +309,6 @@ async function loadFiles() {
                             <span class="card-date">${new Date(file.createdAt).toLocaleDateString('fr-FR')}</span>
                         </div>
                         ${file.description ? `<p><strong>Description:</strong> ${file.description}</p>` : ''}
-                        ${file.prescription ? `<p><strong>Ordonnance:</strong> ${file.prescription}</p>` : ''}
                         ${file.filePath ? `<a href="${file.filePath}" target="_blank" class="btn btn-primary" style="margin-top: 1rem; display: inline-block;">📥 Télécharger</a>` : ''}
                     </div>
                 `).join('');

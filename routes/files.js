@@ -225,6 +225,8 @@ const encryptedPath = path.join(__dirname, '..', 'uploads', 'encrypted', filenam
 // ========================================
 // LISTE DES FICHIERS (avec filtres)
 // ========================================
+// routes/files.js - Route GET /list (ligne 288)
+
 router.get('/list', authenticate, async (req, res) => {
   try {
     const { patientId } = req.query;
@@ -234,7 +236,6 @@ router.get('/list', authenticate, async (req, res) => {
     // Si médecin, voir tous les fichiers de ses patients
     if (req.user.role === 'medecin' || req.user.role === 'chef_service') {
       if (patientId) {
-        // Vérifier que le patient est assigné au médecin
         const patient = await Patient.findOne({
           _id: patientId,
           assignedDoctor: req.user._id
@@ -262,10 +263,34 @@ router.get('/list', authenticate, async (req, res) => {
     const files = await MedicalFile.find(query)
       .populate('doctor', 'username email firstName lastName')
       .sort({ createdAt: -1 })
-      .select('-encryption -accessLogs'); // Ne pas exposer les métadonnées de chiffrement
+      .select('-encryption -accessLogs');
     
-    res.json(files);
+    // ✅ CORRECTION : Déchiffrer les descriptions avant envoi
+    const decryptedFiles = files.map(file => {
+      try {
+        // Utiliser decryptFields si la méthode existe
+        if (file.decryptFields && typeof file.decryptFields === 'function') {
+          const decrypted = file.decryptFields();
+          // Log pour déboguer
+          if (decrypted.description && decrypted.description.includes(':')) {
+            console.warn(`⚠️ Description encore chiffrée pour le fichier ${file._id}`);
+          }
+          return decrypted;
+        } else {
+          console.warn(`⚠️ Méthode decryptFields non disponible pour le fichier ${file._id}`);
+          // Si la méthode n'existe pas, retourner l'objet tel quel
+          return file.toObject();
+        }
+      } catch (error) {
+        console.error(`❌ Erreur déchiffrement fichier ${file._id}:`, error.message);
+        // En cas d'erreur, retourner l'objet sans déchiffrement
+        return file.toObject();
+      }
+    });
+    
+    res.json(decryptedFiles);
   } catch (error) {
+    console.error('❌ Erreur liste fichiers:', error);
     res.status(500).json({ message: 'Erreur', error: error.message });
   }
 });
