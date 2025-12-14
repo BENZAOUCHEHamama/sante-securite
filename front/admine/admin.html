@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Administrateur</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>🔐 Espace Administrateur</h1>
+            <div class="user-info">
+                <span id="userName"></span>
+                <button id="logoutBtn" class="btn btn-secondary">Déconnexion</button>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <aside class="sidebar">
+                <nav>
+                    <a href="#" class="nav-item active" data-page="users">Liste des utilisateurs</a>
+                    <a href="#" class="nav-item" data-page="pending">Utilisateurs en attente</a>
+                    <a href="#" class="nav-item" data-page="permissions">Gestion des droits</a>
+                </nav>
+            </aside>
+
+            <div class="content">
+                <!-- Liste des utilisateurs -->
+                <div id="usersPage" class="page active">
+                    <h2>Liste des utilisateurs inscrits</h2>
+                    <div class="filters">
+                        <select id="roleFilter">
+                            <option value="">Tous les rôles</option>
+                            <option value="patient">Patient</option>
+                            <option value="medecin">Médecin</option>
+                            <option value="chef_service">Chef de service</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+                    <div id="usersList" class="users-table">
+                        <!-- Les utilisateurs seront chargés ici -->
+                    </div>
+                </div>
+
+                <!-- Utilisateurs en attente -->
+                <div id="pendingPage" class="page" style="display: none;">
+                    <h2>Utilisateurs en attente de validation</h2>
+                    <div id="pendingList" class="pending-list">
+                        <!-- Les utilisateurs en attente seront chargés ici -->
+                    </div>
+                </div>
+
+                <!-- Gestion des droits -->
+                <div id="permissionsPage" class="page" style="display: none;">
+                    <h2>Gestion des droits d'accès</h2>
+                    <div id="permissionsContent">
+                        <p>Sélectionnez un utilisateur pour gérer ses droits d'accès</p>
+                        <select id="userSelect">
+                            <option value="">Sélectionnez un utilisateur</option>
+                        </select>
+                        <div id="permissionsForm" style="display: none;">
+                            <!-- Formulaire de permissions -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>TP Confidentialité - MFA</title>
+<link rel="stylesheet" href="mfa.css">
+</head>
+<body>
+
+<div class="container">
+  <h2>Vérification MFA</h2>
+  <p>Entrez le code généré par votre application d'authentification</p>
+
+  <form id="mfaForm">
+    <label for="mfaCode">Code MFA</label>
+    <input type="text" id="mfaCode" placeholder="123456" required>
+    <button type="submit">Valider</button>
+  </form>
+
+  <div id="message"></div>
+</div>
+
+<script src="mfa.js"></script>
+</body>
+</html>
