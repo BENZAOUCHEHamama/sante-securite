@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Médecin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>👨‍⚕️ Espace Médecin</h1>
+            <div class="user-info">
+                <span id="userName"></span>
+                <button id="logoutBtn" class="btn btn-secondary">Déconnexion</button>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <aside class="sidebar">
+                <nav>
+                    <a href="#" class="nav-item active" data-page="patients">👥 Mes Patients</a>
+                    <a href="#" class="nav-item" data-page="requests">📬 Demandes de suivi</a>
+                </nav>
+            </aside>
+
+            <div class="content">
+                <!-- ===== PAGE 1: MES PATIENTS ===== -->
+                <div id="patientsPage" class="page active">
+                    <h2>👥 Liste de mes patients</h2>
+                    <div id="patientsList" class="patients-grid">
+                        <p class="loading">Chargement des patients...</p>
+                    </div>
+                </div>
+
+                <!-- ===== PAGE 2: DEMANDES DE SUIVI ===== -->
+                <div id="requestsPage" class="page" style="display: none;">
+                    <h2>📬 Demandes de suivi en attente</h2>
+                    <div id="requestsList" class="pending-list">
+                        <p class="loading">Chargement des demandes...</p>
+                    </div>
+                </div>
+
+                <!-- ===== PAGE 3: PROFIL PATIENT ===== -->
+                <div id="patientProfilePage" class="page" style="display: none;">
+                    <button id="backToPatients" class="btn btn-secondary">← Retour à la liste</button>
+                    <h2>📋 Profil du patient</h2>
+                    <div id="patientProfile" class="profile-info">
+                        <!-- Chargé dynamiquement -->
+                    </div>
+                    
+                    <div class="patient-actions">
+                        <button id="viewAnalysesBtn" class="btn btn-primary">📊 Voir les analyses</button>
+                        <button id="uploadFileBtn" class="btn btn-primary">📤 Envoyer un fichier</button>
+                    </div>
+                </div>
+
+                <!-- ===== PAGE 4: ANALYSES PATIENT ===== -->
+                <div id="analysesPage" class="page" style="display: none;">
+                    <button id="backToProfile" class="btn btn-secondary">← Retour au profil</button>
+                    <h2>📊 Analyses du patient</h2>
+                    <div id="analysesList" class="analyses-list">
+                        <!-- Chargé dynamiquement -->
+                    </div>
+                </div>
+
+                <!-- ===== PAGE 5: UPLOAD FICHIER ===== -->
+                <div id="uploadFilePage" class="page" style="display: none;">
+                    <button id="backToProfileFromUpload" class="btn btn-secondary">← Retour au profil</button>
+                    <h2>📤 Envoyer un fichier médical chiffré</h2>
+                    
+                    <div class="upload-container">
+                        <div class="info-message">
+                            🔒 Le fichier sera automatiquement chiffré avec AES-256-GCM avant l'envoi
+                        </div>
+                        
+                        <form id="uploadFileForm">
+                            <div class="form-group">
+                                <label>📄 Titre du fichier *</label>
+                                <input type="text" id="fileTitle" required placeholder="Ex: Résultats d'analyse sanguine">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>📝 Description</label>
+                                <textarea id="fileDescription" placeholder="Description optionnelle du fichier" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>🏷️ Type de fichier *</label>
+                                <select id="fileType" required>
+                                    <option value="">-- Sélectionner un type --</option>
+                                    <option value="prescription">💊 Ordonnance</option>
+                                    <option value="report">📋 Compte-rendu</option>
+                                    <option value="scanner">🔬 Scanner</option>
+                                    <option value="radiography">📸 Radiographie</option>
+                                    <option value="analysis">🧪 Analyse</option>
+                                    <option value="other">📄 Autre</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label>📎 Fichier (PDF, JPG, PNG, DOC - Max 10MB) *</label>
+                                <input type="file" id="fileInput" required accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+                            </div>
+                            
+                            <div style="display: flex; gap: 10px; margin-top: 20px;">
+                                <button type="submit" class="btn btn-primary">
+                                    🔐 Chiffrer et envoyer
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="showPage('patientProfile')">
+                                    ❌ Annuler
+                                </button>
+                            </div>
+                            
+                            <div id="uploadStatus" style="margin-top: 20px;"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="doctor.js"></script>
+</body>
+</html>

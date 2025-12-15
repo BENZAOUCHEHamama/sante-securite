@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Chef de Service</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>👔 Espace Chef de Service</h1>
+            <div class="user-info">
+                <span id="userName"></span>
+                <button id="logoutBtn" class="btn btn-secondary">Déconnexion</button>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <aside class="sidebar">
+                <nav>
+                    <a href="#" class="nav-item active" data-page="patients">Mes Patients</a>
+                    <a href="#" class="nav-item" data-page="doctors">Médecins du service</a>
+                    <a href="#" class="nav-item" data-page="servicePatients">Patients du service</a>
+                </nav>
+            </aside>
+
+            <div class="content">
+                <!-- Liste des patients (comme médecin) -->
+                <div id="patientsPage" class="page active">
+                    <h2>Liste des patients</h2>
+                    <div id="patientsList" class="patients-grid">
+                        <!-- Les patients seront chargés ici -->
+                    </div>
+                </div>
+
+                <!-- Profil patient -->
+                <div id="patientProfilePage" class="page" style="display: none;">
+                    <button id="backToPatients" class="btn btn-secondary">← Retour à la liste</button>
+                    <div id="patientProfile">
+                        <!-- Le profil sera chargé ici -->
+                    </div>
+                    <div class="patient-actions">
+                        <button id="viewAnalysesBtn" class="btn btn-primary">Voir les analyses</button>
+                        <button id="openChatBtn" class="btn btn-primary">Ouvrir le chat</button>
+                    </div>
+                </div>
+
+                <!-- Analyses du patient -->
+                <div id="analysesPage" class="page" style="display: none;">
+                    <button id="backToProfile" class="btn btn-secondary">← Retour au profil</button>
+                    <h2>Analyses du patient</h2>
+                    <div id="analysesList">
+                        <!-- Les analyses seront chargées ici -->
+                    </div>
+                </div>
+
+                <!-- Chat avec patient -->
+                <div id="chatPage" class="page" style="display: none;">
+                    <button id="backToProfileFromChat" class="btn btn-secondary">← Retour au profil</button>
+                    <h2>Chat avec le patient</h2>
+                    <div id="chatMessages" class="chat-messages">
+                        <!-- Les messages seront affichés ici -->
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="messageInput" placeholder="Tapez votre message...">
+                        <button id="sendMessageBtn" class="btn btn-primary">Envoyer</button>
+                    </div>
+                </div>
+
+                <!-- Médecins du service -->
+                <div id="doctorsPage" class="page" style="display: none;">
+                    <h2>Médecins du service</h2>
+                    <div id="doctorsList" class="doctors-list">
+                        <!-- Les médecins seront chargés ici -->
+                    </div>
+                </div>
+
+                <!-- Patients du service -->
+                <div id="servicePatientsPage" class="page" style="display: none;">
+                    <h2>Patients du service</h2>
+                    <div id="servicePatientsList" class="patients-grid">
+                        <!-- Les patients du service seront chargés ici -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="doctor.js"></script>
+    <script src="chief.js"></script>
+</body>
+</html>
+
+

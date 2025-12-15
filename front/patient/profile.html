@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Espace Patient</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>👤 Espace Patient</h1>
+            <div class="user-info">
+                <span id="userName"></span>
+                <button id="logoutBtn" class="btn btn-secondary">Déconnexion</button>
+            </div>
+        </header>
+
+        <main class="app-main">
+            <aside class="sidebar">
+                <div class="profile-card">
+                    <img id="profilePhoto" src="https://via.placeholder.com/100" alt="Photo de profil">
+                    <h3 id="profileName"></h3>
+                </div>
+                <nav>
+                    <a href="#" class="nav-item active" data-page="analyses">Analyses</a>
+                    <a href="#" class="nav-item" data-page="files">Fichiers médicaux</a>
+                    <a href="#" class="nav-item" data-page="profile">Mon profil</a>
+                </nav>
+            </aside>
+
+            <div class="content">
+                <!-- Page Analyses -->
+                <div id="analysesPage" class="page active">
+                    <h2>Mes analyses</h2>
+                    <div id="analysesList" class="analyses-list">
+                        <!-- Les analyses seront chargées ici -->
+                    </div>
+                </div>
+
+                <!-- Page Fichiers médicaux -->
+                <div id="filesPage" class="page" style="display: none;">
+                    <h2>Mes fichiers médicaux</h2>
+                    <div id="filesList" class="files-list">
+                        <!-- Les fichiers seront chargés ici -->
+                    </div>
+                </div>
+
+                <!-- Page Profil -->
+                <div id="profilePage" class="page" style="display: none;">
+                    <h2>Mon profil</h2>
+                    <div id="profileInfo" class="profile-info">
+                        <!-- Les informations du profil seront chargées ici -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+    <script src="patient.js"></script>
+</body>
+</html>

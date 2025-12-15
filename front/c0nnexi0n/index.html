@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Système de Santé</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="homePage" class="home-container">
+  <header class="home-header">
+    <h1>🏥 Hôpital Central - Système de Gestion Médicale</h1>
+    <nav>
+      <a href="#" class="active">Accueil</a>
+      <a href="#" onclick="showAuthPage(); return false;">Connexion / Inscription</a>
+    </nav>
+  </header>
+
+  <main class="home-main">
+    <section class="hero">
+      <h2>Bienvenue dans notre système de gestion médicale sécurisé</h2>
+      <p class="subtitle">Protection maximale de vos données de santé</p>
+    </section>
+
+    <section class="hospital-info">
+      <h2>À propos de notre hôpital</h2>
+      <p>
+        L'Hôpital Central est un établissement de santé de pointe, dédié à fournir 
+        des soins médicaux de qualité tout en garantissant la confidentialité et 
+        la sécurité absolue des données de nos patients.
+      </p>
+      <p>
+        Notre mission est de combiner excellence médicale et innovation technologique 
+        pour offrir une expérience de soins optimale dans un environnement sécurisé.
+      </p>
+    </section>
+
+    <section class="sensitive-data">
+      <h2>Pourquoi les données médicales sont sensibles ?</h2>
+      <div class="reasons">
+        <div class="reason-card">
+          <h3>🔒 Confidentialité</h3>
+          <p>
+            Les données médicales contiennent des informations personnelles 
+            extrêmement privées sur l'état de santé, les traitements, et 
+            l'historique médical d'un individu.
+          </p>
+        </div>
+        <div class="reason-card">
+          <h3>🛡️ Protection légale</h3>
+          <p>
+            La loi exige une protection stricte des données de santé. 
+            Toute divulgation non autorisée peut avoir des conséquences 
+            légales graves.
+          </p>
+        </div>
+        <div class="reason-card">
+          <h3>💼 Risques professionnels</h3>
+          <p>
+            L'exposition de données médicales peut affecter l'emploi, 
+            l'assurance, et les relations personnelles d'un individu.
+          </p>
+        </div>
+        <div class="reason-card">
+          <h3>🎯 Cible des cybercriminels</h3>
+          <p>
+            Les données médicales sont très recherchées sur le marché noir 
+            car elles peuvent être utilisées pour le vol d'identité, la 
+            fraude médicale, ou le chantage.
+          </p>
+        </div>
+        <div class="reason-card">
+          <h3>🔐 Intégrité des données</h3>
+          <p>
+            Toute altération des données médicales peut avoir des conséquences 
+            graves sur les décisions de traitement et la sécurité du patient.
+          </p>
+        </div>
+        <div class="reason-card">
+          <h3>📊 Big Data et anonymisation</h3>
+          <p>
+            Dans le contexte du Big Data, même des données "anonymisées" 
+            peuvent être ré-identifiées, nécessitant des mesures de protection 
+            avancées.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="security-features">
+      <h2>Nos mesures de sécurité</h2>
+      <ul>
+        <li>✅ Authentification multi-facteurs (MFA) à 3 niveaux</li>
+        <li>✅ Chiffrement des données sensibles en base de données</li>
+        <li>✅ Stockage non contigu des données chiffrées</li>
+        <li>✅ Système de gestion des droits d'accès personnalisé</li>
+        <li>✅ Audit et traçabilité de toutes les actions</li>
+        <li>✅ Communication sécurisée entre médecins et patients</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2024 Hôpital Central. Tous droits réservés.</p>
+  </footer>
+</div>
+
+<div id="authPage" class="container" style="display:none;">
+  <div class="header">
+    <i class="fas fa-stethoscope"></i>
+    <h1>Système de Santé</h1>
+    <p>Plateforme Santé Sécurisée</p>
+  </div>
+
+  <div class="form-container">
+
+    <!-- SIGNUP -->
+    <div id="signupStep" class="step active">
+      <h2>Inscription</h2>
+
+      <input type="text" id="signupUsername" placeholder="Nom d'utilisateur">
+      <input type="email" id="signupEmail" placeholder="Email">
+<div class="form-group">
+  <input type="password" id="signupPassword" placeholder="Mot de passe">
+  
+  <!-- Indicateur de force du mot de passe -->
+  <div class="password-strength-container">
+    <div class="strength-bar-container">
+      <div id="passwordStrengthBar" class="strength-bar"></div>
+    </div>
+    <div id="passwordStrengthText" class="strength-text"></div>
+    <ul id="passwordRequirements" class="requirements-list"></ul>
+  </div>
+</div>      
+      <select id="signupRole">
+        <option value="" disabled selected>Choisir un rôle</option>
+        <option value="medecin">Médecin</option>
+        <option value="patient">Patient</option>
+        <option value="admin">Administrateur</option>
+      </select>
+
+      <!-- Champs médecins -->
+      <input type="text" id="signupSpecialite" placeholder="Spécialité (médecin)" style="display:none;">
+      <input type="text" id="signupService" placeholder="Service (chef seulement)" style="display:none;">
+      <label style="display:none;" id="chefLabel">
+        <input type="checkbox" id="signupIsChef"> Chef de service
+      </label>
+
+      <label>
+        <input type="checkbox" id="signupMfaEnabled"> Activer MFA
+      </label>
+
+      <button type="button" class="btn-primary" onclick="signup()">S'inscrire</button>
+      <p class="link">Vous avez déjà un compte ? <a href="#" onclick="showLogin()">Se connecter</a></p>
+
+      <div id="signupMessage" class="message"></div>
+    </div>
+
+    <!-- LOGIN -->
+    <div id="loginStep" class="step">
+      <h2>Connexion</h2>
+      <input type="email" id="loginEmail" placeholder="Email">
+      <input type="password" id="loginPassword" placeholder="Mot de passe">
+      <div id="loginMfaContainer" style="display:none;">
+        <input type="text" id="loginMfaCode" placeholder="Code MFA" maxlength="6">
+      </div>
+      <button type="button" class="btn-primary" onclick="login()">Se connecter</button>
+      <p class="link">Pas encore inscrit ? <a href="#" onclick="showSignup()">Créer un compte</a></p>
+
+      <div id="loginMessage" class="message"></div>
+    </div>
+
+    <!-- QR Code MFA -->
+    <div id="qrStep" class="step">
+      <h2>Configuration MFA</h2>
+      <p>Scannez ce QR code avec Google Authenticator :</p>
+      <img id="qrImage" src="" alt="QR Code MFA">
+      <button type="button" class="btn-primary" onclick="showLogin()">Continuer vers login</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="l0gin.js"></script>
+
+</body>
+</html>
